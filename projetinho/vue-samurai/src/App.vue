@@ -1,25 +1,40 @@
 <template>
-  <b-container>
-    <p>Hello, Bootstrap-Vue</p>
-    <b-btn variant="primary">Click</b-btn>
-  </b-container>
+  <div id="app">
+    <Header class="mb-5"/>
+    <b-container>
+      <b-row align-v="center">
+        <Card v-for="curso in cursos" :key="curso.id" :nome="curso.name"/>
+      </b-row>
+    </b-container>
+  </div>
+  
 </template>
 
 <script>
+import Card from './components/Card.vue';
+import Header from './components/Header.vue';
 
 export default {
   name: 'App',
-  components: {}
+  data() {
+    return {
+      cursos: []
+    }
+  },
+  components: {
+    Card,
+    Header
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      const res = await fetch("cursos.json");
+      const val = await res.json();
+      this.cursos = val.dados;
+      console.log(val.dados);
+    }
+  }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
